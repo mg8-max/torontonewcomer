@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toronto Newcomer &amp; Refugee Resource Hub</title>
+<title>Newcomer &amp; Refugee Resource Hub — Toronto &amp; Vancouver</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2316262E'/%3E%3Ccircle cx='50' cy='50' r='14' fill='none' stroke='%23E3A008' stroke-width='7'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -267,6 +267,23 @@
   }
   .directions:hover{ background:var(--gold); color:#fff !important; }
 
+  .city-switcher{
+    display:flex; justify-content:center; gap:10px;
+    padding:14px 20px 4px;
+    max-width:1080px; margin:0 auto;
+  }
+  .city-btn{
+    font-family:var(--display); font-weight:700; font-size:0.95rem;
+    padding:10px 22px; border-radius:999px;
+    border:2px solid var(--rule);
+    background:var(--panel); color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .city-btn.active{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .city-btn:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; }
+  .city-panel{ display:none; }
+  .city-panel.active{ display:block; }
+
   /* ---------- Universal grid ---------- */
   .cat-grid{
     display:grid;
@@ -349,8 +366,6 @@
 <div class="emergency-bar">
   <span><strong>Need help right now?</strong> Call <strong>2-1-1</strong> — free, 24/7, 150+ languages</span>
   <span class="sep">|</span>
-  <span>Emergency shelter: <strong>416-338-4766</strong></span>
-  <span class="sep">|</span>
   <span class="translate-wrap">🌐 <span id="google_translate_element"></span></span>
 </div>
 
@@ -364,6 +379,13 @@
   }
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<div class="city-switcher">
+  <button class="city-btn active" data-city="toronto">🍁 Toronto</button>
+  <button class="city-btn" data-city="vancouver">🏔️ Vancouver</button>
+</div>
+
+<div id="panel-toronto" class="city-panel active">
 
 <nav class="route-nav" aria-label="Jump to a route">
   <a href="#route-a" data-line="a">Foundations Route</a>
@@ -565,7 +587,7 @@
     <p class="goal">Change lines here — these services aren't tied to your education background.</p>
 
     <div class="callout">
-      <strong>Heads up:</strong> new permanent residents face a <strong>3-month OHIP waiting period</strong>. The Interim Federal Health Program (IFHP) or a community health centre can cover that gap — see Health below.
+      <strong>Heads up:</strong> Ontario eliminated the 3-month OHIP waiting period back in 2020 — eligible newcomers get <strong>immediate coverage</strong> once their application is approved. For anyone not yet OHIP-eligible (some temporary residents, and refugee claimants awaiting status), the Interim Federal Health Program (IFHP) or a community health centre can cover the gap — see Health below.
     </div>
     <p class="map-hint" style="margin-bottom:18px;">🚇 Tap any Directions link below for transit directions from your location</p>
 
@@ -609,8 +631,247 @@
 
 </main>
 
+</div>
+<!-- /panel-toronto -->
+
+<div id="panel-vancouver" class="city-panel">
+
+<nav class="route-nav" aria-label="Jump to a Vancouver route">
+  <a href="#route-a-van" data-line="a">Foundations Route</a>
+  <a href="#route-b-van" data-line="b">Bridge Route</a>
+  <a href="#route-c-van" data-line="c">Credential Route</a>
+  <a href="#route-k-van" data-line="k">Kids Route (K–12) — For Parents</a>
+  <a href="#route-u-van" data-line="u">Interchange (resources for all)</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Vancouver · Newcomer &amp; Refugee Resource Hub</p>
+  <h1>Your route starts wherever you're standing.</h1>
+  <p class="lede">Four pathways, mapped like transit lines, each starting from a different situation. Find your line, follow the stops, and use the Interchange for resources everyone can use regardless of route.</p>
+</header>
+
+<div class="map-wrap">
+  <div class="map-card">
+    <svg class="route-map" viewBox="-115 0 1115 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of four resource routes converging on an Interchange">
+      <path class="route-line" id="lineA-van" d="M60,45 C 220,45 220,165 400,165" stroke="#D98E04"></path>
+      <path class="route-line" id="lineB-van" d="M60,125 C 220,125 220,165 400,165" stroke="#1C7C7C"></path>
+      <path class="route-line" id="lineC-van" d="M60,205 C 220,205 220,165 400,165" stroke="#6B4E71"></path>
+      <path class="route-line" id="lineK-van" d="M60,285 C 220,285 220,165 400,165" stroke="#2E7D53"></path>
+      <path class="route-line" id="trunk-van" d="M400,165 L 620,165" stroke="#16262E"></path>
+      <path class="route-line" id="fan1-van" d="M620,165 C 720,165 720,75 860,75" stroke="#16262E" stroke-width="3" opacity="0.55"></path>
+      <path class="route-line" id="fan2-van" d="M620,165 L 860,165" stroke="#16262E" stroke-width="3" opacity="0.55"></path>
+      <path class="route-line" id="fan3-van" d="M620,165 C 720,165 720,255 860,255" stroke="#16262E" stroke-width="3" opacity="0.55"></path>
+
+      <g class="station" tabindex="0" role="link" aria-label="Foundations route start" data-target="#route-a-van">
+        <circle class="start-ring" cx="60" cy="45" r="9" stroke="#D98E04"></circle>
+        <circle class="dot" cx="60" cy="45" r="9" stroke="#D98E04"></circle>
+        <text class="label-left" x="42" y="42">No Dogwood /</text>
+        <text class="label-left" x="42" y="55">interrupted school</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Bridge route start" data-target="#route-b-van">
+        <circle class="start-ring" cx="60" cy="125" r="9" stroke="#1C7C7C" style="animation-delay:0.35s"></circle>
+        <circle class="dot" cx="60" cy="125" r="9" stroke="#1C7C7C"></circle>
+        <text class="label-left" x="42" y="129">Have Dogwood/diploma</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Credential route start" data-target="#route-c-van">
+        <circle class="start-ring" cx="60" cy="205" r="9" stroke="#6B4E71" style="animation-delay:0.7s"></circle>
+        <circle class="dot" cx="60" cy="205" r="9" stroke="#6B4E71"></circle>
+        <text class="label-left" x="42" y="202">Bachelor's /</text>
+        <text class="label-left" x="42" y="215">professional</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Kids K to 12 route start, for parents" data-target="#route-k-van">
+        <circle class="start-ring" cx="60" cy="285" r="9" stroke="#2E7D53" style="animation-delay:1.05s"></circle>
+        <circle class="dot" cx="60" cy="285" r="9" stroke="#2E7D53"></circle>
+        <text class="label-left" x="42" y="282">Parent of child</text>
+        <text class="label-left" x="42" y="295">in school (K–12)</text>
+      </g>
+
+      <g class="station" tabindex="0" role="link" aria-label="Interchange, resources for everyone" data-target="#route-u-van">
+        <circle class="interchange-dot" cx="620" cy="165" r="12" stroke="#16262E"></circle>
+        <text class="label-mid" x="620" y="132" font-weight="700">INTERCHANGE</text>
+        <text class="label-mid sub" x="620" y="197">resources for everyone</text>
+      </g>
+
+      <g class="station" tabindex="0" role="link" aria-label="Legal aid" data-target="#route-u-van">
+        <circle class="dot" cx="860" cy="75" r="7" stroke="#16262E"></circle>
+        <text x="875" y="80">Legal aid</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Housing and health" data-target="#route-u-van">
+        <circle class="dot" cx="860" cy="165" r="7" stroke="#16262E"></circle>
+        <text x="875" y="170">Housing / Health</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Employment support" data-target="#route-u-van">
+        <circle class="dot" cx="860" cy="255" r="7" stroke="#16262E"></circle>
+        <text x="875" y="260">Employment</text>
+      </g>
+    </svg>
+  </div>
+  <p class="map-hint">👆 Click any stop to jump straight to that section</p>
+  <div class="legend">
+    <a href="#route-a-van" class="legend-item" data-line="a"><span class="swatch"></span>Foundations</a>
+    <a href="#route-b-van" class="legend-item" data-line="b"><span class="swatch"></span>Bridge</a>
+    <a href="#route-c-van" class="legend-item" data-line="c"><span class="swatch"></span>Credential</a>
+    <a href="#route-k-van" class="legend-item" data-line="k"><span class="swatch"></span>Kids (for parents)</a>
+    <a href="#route-u-van" class="legend-item" data-line="u"><span class="swatch"></span>Interchange</a>
+  </div>
+</div>
+
+<main>
+
+  <section class="route" id="route-a-van" data-line="a">
+    <div class="route-head">
+      <span class="route-chip">Foundations Route</span>
+      <h2>No BC high school credential yet</h2>
+    </div>
+    <p class="goal">Goal: get a BC-recognized high school credential — whether you never finished school, or you finished elsewhere and need it recognized here.</p>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — BC Adult Graduation Diploma ("Adult Dogwood")</h3>
+        <span class="contact"><a href="https://www2.gov.bc.ca/gov/content/education-training/k-12/administration/legislation-policy/public-schools/adult-graduation-program" target="_blank" rel="noopener">gov.bc.ca — Adult Graduation Program</a></span>
+        <p><strong>What it is:</strong> BC never adopted the GED or the newer CAEC used in Ontario — it uses its own system instead. Adults 18+ complete 5 courses (Grade 12 Language Arts, Grade 11 Math, and three more Grade 12-level electives) through a school district continuing-education centre or public post-secondary institution, rather than sitting one standardized test. Best for adults who <strong>never completed high school</strong> anywhere.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — Prior Learning Assessment (PLA)</h3>
+        <p><strong>What it is:</strong> BC's version of credit recognition (like Ontario's PLAR). Up to 3 of the 5 required Adult Dogwood courses can be earned through an assessment of what you already know — from school completed elsewhere or life/work experience — instead of retaking classes. Ask about it when you register at a continuing-education centre.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — Adult Basic Education (ABE)</h3>
+        <p><strong>What it is:</strong> tuition-free upgrading courses at BC public colleges to build math/English skills before attempting Dogwood-level courses — BC has waived tuition for these provincially.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-b-van" data-line="b">
+    <div class="route-head">
+      <span class="route-chip">Bridge Route</span>
+      <h2>Have a high school diploma, no post-secondary yet</h2>
+    </div>
+    <p class="goal">Goal: build language skills and workplace-ready credentials, then move into college or trades.</p>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — Free ESL / LINC Classes</h3>
+        <span class="contact"><a href="https://issbc.org/tools-resources/register-for-linc-classes" target="_blank" rel="noopener">issbc.org — Register for LINC</a></span>
+        <p><strong>What it is:</strong> the same federal LINC program available across Canada — free for permanent residents and convention refugees. In BC it's delivered through ISSofBC, MOSAIC, and other settlement agencies across Metro Vancouver.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — WorkBC Employment Services</h3>
+        <span class="contact"><a href="https://www.workbc.ca" target="_blank" rel="noopener">workbc.ca</a></span>
+        <p><strong>What it is:</strong> BC's government-funded employment centres, free to eligible newcomers, offering skills training and pathways into trades and other in-demand fields.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — MOSAIC Employment Workshops</h3>
+        <span class="contact"><a href="https://mosaicbc.org" target="_blank" rel="noopener">MOSAIC</a> · <a href="tel:+16042549626">604-254-9626</a></span>
+        <p><strong>What it is:</strong> job search workshops and employment support for newcomers, covering resumes, interviews, and the Canadian labour market.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-c-van" data-line="c">
+    <div class="route-head">
+      <span class="route-chip">Credential Route</span>
+      <h2>Bachelor's degree or professional credential earned abroad</h2>
+    </div>
+    <p class="goal">Goal: get your credential recognized in Canada, then bridge back into your field.</p>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — Educational Credential Assessment (ECA)</h3>
+        <span class="contact"><a href="https://www.wes.org" target="_blank" rel="noopener">World Education Services (WES)</a> · <a href="tel:+18003613106">1-800-361-3106</a></span>
+        <p><strong>What it is:</strong> WES is IRCC-designated to issue ECAs nationally, so BC residents use the exact same organization and process as anywhere else in Canada — everything can be done online. Cost runs $115–$245 CAD. The <strong>WES Gateway Program</strong> offers an alternative assessment if you have limited proof of your academic documents.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — Bridging Programs</h3>
+        <span class="contact"><a href="https://issbc.org/our-programs-service/career-paths/" target="_blank" rel="noopener">ISSofBC — Career Paths for Skilled Immigrants</a> · ISSofBC Welcome Centre, 2610 Victoria Drive <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=2610+Victoria+Drive+Vancouver+BC&travelmode=transit" target="_blank" rel="noopener">🚇 Directions</a></span>
+        <p><strong>What it is:</strong> connects your international credentials and experience to BC job opportunities, in both regulated professions (needing licensure) and unregulated ones. Typically requires <strong>CLB 6–7+ English</strong> — CLB (Canadian Language Benchmark) is Canada's national 1–12 scale for rating English proficiency; <a href="https://www.language.ca/resourcesexpertise/on-clb/" target="_blank" rel="noopener">see the official CLB explainer</a>. For internationally educated health professionals specifically, <a href="https://successbc.ca" target="_blank" rel="noopener">S.U.C.C.E.S.S.</a> runs a dedicated bridging stream.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — Licensing Bodies</h3>
+        <p>Contact the regulatory body for your specific profession directly — most accept WES evaluations as a starting point.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-k-van" data-line="k">
+    <div class="route-head">
+      <span class="route-chip">Kids Route — For Parents (K–12)</span>
+      <h2>Registering a school-age child</h2>
+    </div>
+    <p class="goal">Goal: get your child enrolled in school and supported through the settlement transition.</p>
+    <div class="callout" style="border-color:var(--line-k); background:#EAF4EE;">
+      <strong>👪 This route is for parents and guardians</strong> — not for the child directly. Walk through these steps on behalf of your school-age kid.
+    </div>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — Register at the Newcomer Welcome Centre (NWC)</h3>
+        <span class="contact"><a href="https://www.vsb.bc.ca/nwc" target="_blank" rel="noopener">vsb.bc.ca — Newcomer Welcome Centre</a> · 1000 East 59th Ave <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=1000+East+59th+Ave+Vancouver+BC&travelmode=transit" target="_blank" rel="noopener">🚇 Directions</a></span>
+        <p><strong>What it is:</strong> the Vancouver School Board's dedicated hub for newcomer registration. Complete the online application first, then attend an in-person document verification appointment with your child. Any K–12 student born outside Canada registers here, regardless of status — and Grade 1–12 students already in Canada without status can register under the district's Sanctuary Schools policy.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — English Language Learner (ELL) Support</h3>
+        <p><strong>What it is:</strong> built into every VSB school day — all elementary schools have ELL support staff, and all secondary schools run dedicated ELL classes. Your child's English is assessed at the NWC and support is arranged automatically, no separate application needed.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — Multicultural Liaison Workers (MCLWs)</h3>
+        <p><strong>What it is:</strong> VSB staff who provide cultural and language support directly to newcomer families — ask your child's school to connect you with one.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-u-van" data-line="u">
+    <div class="route-head">
+      <span class="route-chip">Interchange</span>
+      <h2>Resources for everyone, any route</h2>
+    </div>
+    <p class="goal">Change lines here — these services aren't tied to your education background.</p>
+
+    <div class="callout">
+      <strong>Heads up:</strong> new BC residents face a <strong>3-month MSP (Medical Services Plan) waiting period</strong>. The Interim Federal Health Program (IFHP) or a community health centre can cover that gap — see Health below.
+    </div>
+    <p class="map-hint" style="margin-bottom:18px;">🚇 Tap any Directions link below for transit directions from your location</p>
+
+    <div class="cat-grid">
+      <div class="cat-card">
+        <h3>⚖️ Settlement &amp; Legal Aid</h3>
+        <ul>
+          <li><span class="org">Legal Aid BC</span><span class="contact"><a href="tel:+16044082172">604-408-2172</a> (Lower Mainland) · <a href="tel:+18665772525">1-866-577-2525</a> (toll-free)</span></li>
+          <li><span class="org">Immigration and Refugee Legal Clinic (IRLC)</span><span class="contact"><a href="https://www.irlc.ca" target="_blank" rel="noopener">irlc.ca</a></span></li>
+          <li><span class="org">ISSofBC Welcome Centre</span><span class="contact">2610 Victoria Drive <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=2610+Victoria+Drive+Vancouver+BC&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+          <li><span class="org">MOSAIC</span><span class="contact"><a href="tel:+16042549626">604-254-9626</a> · 5575 Boundary Road <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=5575+Boundary+Road+Vancouver+BC&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <h3>💼 Employment</h3>
+        <ul>
+          <li><span class="org">WorkBC</span><span class="contact"><a href="https://www.workbc.ca" target="_blank" rel="noopener">workbc.ca</a></span></li>
+          <li><span class="org">ISSofBC — Career Paths</span><span class="contact"><a href="https://issbc.org/our-programs-service/career-paths/" target="_blank" rel="noopener">issbc.org</a></span></li>
+          <li><span class="org">S.U.C.C.E.S.S.</span><span class="contact"><a href="https://successbc.ca" target="_blank" rel="noopener">successbc.ca</a></span></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <h3>🏠 Housing</h3>
+        <ul>
+          <li><span class="org">BC211 Shelter List</span><span class="contact">Dial or text <a href="tel:211">2-1-1</a></span></li>
+          <li><span class="org">BC Housing — Homeless Outreach Program</span><span class="contact"><a href="https://www.bchousing.org" target="_blank" rel="noopener">bchousing.org</a></span></li>
+          <li><span class="org">Refugee Claimant Transitional Homes</span><span class="contact">Up to 6 months — ask your settlement worker</span></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <h3>🏥 Health &amp; Mental Health</h3>
+        <ul>
+          <li><span class="org">MSP (Medical Services Plan)</span><span class="contact"><a href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp" target="_blank" rel="noopener">gov.bc.ca — MSP</a></span></li>
+          <li><span class="org">Interim Federal Health Program (IFHP)</span><span class="contact">canada.ca — search "IFHP"</span></li>
+          <li><span class="org">Community Health Centres</span><span class="contact">Many treat patients regardless of MSP status — ask ISSofBC or MOSAIC for a referral</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+</div>
+<!-- /panel-vancouver -->
+
 <footer>
-  <p>Built for a Toronto chapter connecting newcomers and refugees with the resources they need — verify hours and eligibility directly with each org, as programs and funding change.</p>
+  <p>Built for Toronto and Vancouver chapters connecting newcomers and refugees with the resources they need — verify hours and eligibility directly with each org, as programs and funding change.</p>
 </footer>
 
 <!-- Maintainer note (not visible to site visitors): update contacts/programs directly in this file
@@ -624,13 +885,13 @@
     path.classList.add('animate');
   });
 
-  // Dynamically position sticky nav just below the emergency bar, whatever its actual height is.
-  // Watches for size changes too, since the Google Translate widget loads asynchronously
+  // Dynamically position ALL sticky navs (Toronto's and Vancouver's) just below the emergency
+  // bar. Watches for size changes too, since the Google Translate widget loads asynchronously
   // and can grow the bar's height after our first measurement.
   var bar = document.querySelector('.emergency-bar');
-  var navEl = document.querySelector('nav.route-nav');
+  var allNavs = Array.from(document.querySelectorAll('nav.route-nav'));
   function positionNav(){
-    navEl.style.top = bar.offsetHeight + 'px';
+    allNavs.forEach(function(n){ n.style.top = bar.offsetHeight + 'px'; });
   }
   positionNav();
   window.addEventListener('resize', positionNav);
@@ -643,11 +904,15 @@
 
   // Single shared scroll function, used by the nav pills, the legend, AND the map stations.
   // Calculated manually (not relying on default anchor jump / scroll-margin-top) so it
-  // reliably clears both sticky bars regardless of their exact heights.
+  // reliably clears both sticky bars regardless of their exact heights. Uses whichever
+  // nav belongs to the same city panel as the target, since Toronto and Vancouver each
+  // have their own.
   function scrollToTarget(targetId){
     var target = document.querySelector(targetId);
     if(!target) return;
-    var offset = bar.offsetHeight + navEl.offsetHeight + 16;
+    var panel = target.closest('.city-panel');
+    var localNav = (panel && panel.querySelector('nav.route-nav')) || allNavs[0];
+    var offset = bar.offsetHeight + localNav.offsetHeight + 16;
     var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
     window.scrollTo({ top: top, behavior: 'smooth' });
     history.pushState(null, '', targetId);
@@ -697,6 +962,28 @@
     });
   }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
   sections.forEach(function(sec){ observer.observe(sec); });
+
+  // City switcher: toggle which panel is visible, re-measure that panel's route-line
+  // lengths (a hidden SVG reports 0 length, so the draw animation needs a fresh
+  // measurement the first time each panel becomes visible), and scroll to the top.
+  var cityBtns = Array.from(document.querySelectorAll('.city-btn'));
+  cityBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var city = btn.getAttribute('data-city');
+      cityBtns.forEach(function(b){ b.classList.toggle('active', b === btn); });
+      document.querySelectorAll('.city-panel').forEach(function(panel){
+        panel.classList.toggle('active', panel.id === 'panel-' + city);
+      });
+      var activePanel = document.getElementById('panel-' + city);
+      activePanel.querySelectorAll('.route-line').forEach(function(path){
+        var len = path.getTotalLength();
+        path.style.setProperty('--len', len);
+        path.classList.add('animate');
+      });
+      positionNav();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
 </script>
 
 </body>
