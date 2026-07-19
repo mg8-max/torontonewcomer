@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toronto Newcomer &amp; Refugee Resource Hub</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2316262E'/%3E%3Ccircle cx='50' cy='50' r='14' fill='none' stroke='%23E3A008' stroke-width='7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F6F3;
+    --panel:#FFFFFF;
+    --ink:#16262E;
+    --ink-soft:#45565E;
+    --line-a:#D98E04; /* Foundations route */
+    --line-b:#1C7C7C; /* Bridge route */
+    --line-c:#6B4E71; /* Credential route */
+    --line-k:#2E7D53; /* Kids / K-12 route */
+    --interchange:#16262E;
+    --gold:#E3A008;
+    --rule:#DCDFDA;
+    --radius:14px;
+    --display:'Space Grotesk', sans-serif;
+    --body:'IBM Plex Sans', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.5;
+  }
+  a{color:inherit;}
+
+  /* ---------- Emergency bar ---------- */
+  .emergency-bar{
+    position:sticky; top:0; z-index:50;
+    background:var(--interchange);
+    color:#fff;
+    font-family:var(--mono);
+    font-size:0.82rem;
+    padding:8px 16px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    flex-wrap:wrap;
+    text-align:center;
+  }
+  .emergency-bar strong{color:var(--gold); font-weight:600;}
+  .emergency-bar .sep{opacity:0.4;}
+  .translate-wrap{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:0.78rem;
+    background:#fff;
+    border-radius:6px;
+    padding:2px 8px;
+  }
+  #google_translate_element{ line-height:1; }
+  #google_translate_element img{ display:none !important; }
+  .goog-te-banner-frame{ display:none !important; }
+  body{ top:0 !important; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:56px 20px 24px;
+    max-width:1080px;
+    margin:0 auto;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(2.1rem, 5vw, 3.4rem);
+    line-height:1.05;
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  .hero p.lede{
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    max-width:640px;
+    margin:0 0 8px;
+  }
+
+  /* ---------- Map diagram ---------- */
+  .map-wrap{
+    max-width:1080px;
+    margin:24px auto 8px;
+    padding:0 20px;
+  }
+  .map-card{
+    background:var(--panel);
+    border-radius:var(--radius);
+    border:1px solid var(--rule);
+    padding:24px 12px 8px;
+    overflow-x:auto;
+    box-shadow:0 1px 2px rgba(22,38,46,0.04), 0 8px 24px -12px rgba(22,38,46,0.10);
+  }
+  svg.route-map{ display:block; min-width:640px; width:100%; height:auto; }
+  .route-line{ fill:none; stroke-width:6; stroke-linecap:round; }
+  .station{ cursor:pointer; }
+  .station circle.dot{ fill:var(--panel); stroke-width:5; transition:transform 0.15s ease; transform-origin:center; transform-box:fill-box; }
+  .station:hover circle.dot, .station:focus-visible circle.dot{ transform:scale(1.25); }
+  .station text{ font-family:var(--body); font-size:12.5px; fill:var(--ink); font-weight:500; paint-order:stroke; stroke:var(--bg); stroke-width:4px; stroke-linejoin:round; }
+  .station .sub{ font-size:10.5px; fill:var(--ink-soft); font-weight:400; }
+  .station .label-left{ text-anchor:end; }
+  .station .label-mid{ text-anchor:middle; }
+  .interchange-dot{ fill:var(--interchange); }
+
+  .start-ring{
+    fill:none; stroke-width:2; opacity:0.55;
+    transform-origin:center; transform-box:fill-box;
+    animation:pulse-ring 2.2s ease-out infinite;
+  }
+  @keyframes pulse-ring{
+    0%{ transform:scale(1); opacity:0.5; }
+    100%{ transform:scale(2.6); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){ .start-ring{ animation:none; opacity:0; } }
+
+  @keyframes draw{
+    from{ stroke-dashoffset: var(--len); }
+    to{ stroke-dashoffset: 0; }
+  }
+  .route-line.animate{
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: var(--len);
+    animation: draw 1.1s ease forwards;
+  }
+
+  /* ---------- Nav ---------- */
+  nav.route-nav{
+    position:sticky; top:37px; z-index:40;
+    background:var(--bg);
+    border-bottom:1px solid var(--rule);
+    padding:10px 20px;
+    display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+  }
+  nav.route-nav a{
+    text-decoration:none;
+    font-family:var(--body);
+    font-weight:600;
+    font-size:0.86rem;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1.5px solid var(--rule);
+    background:var(--panel);
+    white-space:nowrap;
+  }
+  nav.route-nav a:focus-visible, .station:focus-visible, a:focus-visible, button:focus-visible{
+    outline:3px solid var(--gold); outline-offset:2px;
+  }
+  nav.route-nav a{ transition:background 0.15s ease, color 0.15s ease; }
+  nav.route-nav a[data-line="a"]{ border-color:var(--line-a); }
+  nav.route-nav a[data-line="b"]{ border-color:var(--line-b); }
+  nav.route-nav a[data-line="c"]{ border-color:var(--line-c); }
+  nav.route-nav a[data-line="k"]{ border-color:var(--line-k); }
+  nav.route-nav a[data-line="u"]{ border-color:var(--interchange); }
+  nav.route-nav a[data-line="a"].active{ background:var(--line-a); color:#fff; }
+  nav.route-nav a[data-line="b"].active{ background:var(--line-b); color:#fff; }
+  nav.route-nav a[data-line="c"].active{ background:var(--line-c); color:#fff; }
+  nav.route-nav a[data-line="k"].active{ background:var(--line-k); color:#fff; }
+  nav.route-nav a[data-line="u"].active{ background:var(--interchange); color:#fff; }
+
+  /* ---------- Sections ---------- */
+  main{ max-width:1080px; margin:0 auto; padding:0 20px 80px; }
+  section.route{
+    margin-top:56px;
+    scroll-margin-top:100px;
+  }
+  .route-head{
+    display:flex; align-items:baseline; gap:14px; margin-bottom:6px; flex-wrap:wrap;
+  }
+  .route-chip{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:#fff;
+    padding:3px 10px;
+    border-radius:999px;
+    font-weight:600;
+  }
+  .route[data-line="a"] .route-chip{ background:var(--line-a); }
+  .route[data-line="b"] .route-chip{ background:var(--line-b); }
+  .route[data-line="c"] .route-chip{ background:var(--line-c); }
+  .route[data-line="k"] .route-chip{ background:var(--line-k); }
+  .route[data-line="u"] .route-chip{ background:var(--interchange); }
+
+  section.route h2{
+    font-family:var(--display);
+    font-size:1.7rem;
+    margin:0;
+  }
+  section.route > .goal{
+    color:var(--ink);
+    font-weight:600;
+    max-width:680px;
+    margin:6px 0 26px;
+  }
+
+  .stops{
+    position:relative;
+    padding-left:28px;
+    border-left:4px solid var(--rule);
+  }
+  .route[data-line="a"] .stops{ border-left-color:var(--line-a); }
+  .route[data-line="b"] .stops{ border-left-color:var(--line-b); }
+  .route[data-line="c"] .stops{ border-left-color:var(--line-c); }
+  .route[data-line="k"] .stops{ border-left-color:var(--line-k); }
+
+  .stop{
+    position:relative;
+    margin-bottom:22px;
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    transition:box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  .stop:hover{
+    box-shadow:0 10px 24px -14px rgba(22,38,46,0.22);
+    transform:translateY(-2px);
+  }
+  .stop::before{
+    content:"";
+    position:absolute;
+    left:-35px; top:22px;
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--panel);
+    border:4px solid var(--rule);
+  }
+  .route[data-line="a"] .stop::before{ border-color:var(--line-a); }
+  .route[data-line="b"] .stop::before{ border-color:var(--line-b); }
+  .route[data-line="c"] .stop::before{ border-color:var(--line-c); }
+  .route[data-line="k"] .stop::before{ border-color:var(--line-k); }
+
+  .stop h3{ margin:0 0 4px; font-family:var(--display); font-size:1.05rem; }
+  .stop .contact{
+    font-family:var(--mono);
+    font-size:0.84rem;
+    color:var(--ink-soft);
+    margin:0 0 8px;
+    display:block;
+  }
+  .stop p{ margin:0; font-size:0.94rem; color:var(--ink-soft); }
+  .stop a, .cat-card a, .callout a{ text-decoration:underline; text-underline-offset:2px; }
+  .stop a:hover, .cat-card a:hover, .callout a:hover{ color:var(--gold); }
+  .directions{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:var(--mono); font-size:0.78rem;
+    background:#EEF1EC; padding:2px 8px; border-radius:999px;
+    text-decoration:none !important;
+    margin-left:4px;
+  }
+  .directions:hover{ background:var(--gold); color:#fff !important; }
+
+  /* ---------- Universal grid ---------- */
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:16px;
+  }
+  .cat-card{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:var(--radius);
+    padding:18px;
+    transition:box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  .cat-card:hover{
+    box-shadow:0 10px 24px -14px rgba(22,38,46,0.22);
+    transform:translateY(-2px);
+  }
+  .cat-card h3{
+    font-family:var(--display);
+    font-size:1rem;
+    margin:0 0 10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .cat-card ul{ margin:0; padding-left:0; list-style:none; }
+  .cat-card li{ margin-bottom:10px; font-size:0.9rem; }
+  .cat-card .org{ font-weight:600; display:block; }
+  .cat-card .contact{ font-family:var(--mono); font-size:0.8rem; color:var(--ink-soft); }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--rule);
+    padding:28px 20px 40px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+  }
+  footer .note{ max-width:560px; margin:8px auto 0; }
+
+  .callout{
+    background:#FBF3E1;
+    border:1px solid #EBD8A6;
+    border-radius:var(--radius);
+    padding:14px 16px;
+    font-size:0.9rem;
+    margin:0 0 26px;
+  }
+
+  .map-hint{
+    text-align:center;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    margin:10px 0 4px;
+  }
+  .legend{
+    display:flex; flex-wrap:wrap; gap:8px 18px;
+    justify-content:center;
+    margin:10px 0 4px;
+  }
+  .legend-item{
+    display:inline-flex; align-items:center; gap:6px;
+    text-decoration:none;
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--ink-soft);
+    padding:3px 4px;
+    border-radius:6px;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .legend-item:hover, .legend-item:focus-visible{ background:var(--panel); color:var(--ink); }
+  .legend-item .swatch{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .legend-item[data-line="a"] .swatch{ background:var(--line-a); }
+  .legend-item[data-line="b"] .swatch{ background:var(--line-b); }
+  .legend-item[data-line="c"] .swatch{ background:var(--line-c); }
+  .legend-item[data-line="k"] .swatch{ background:var(--line-k); }
+  .legend-item[data-line="u"] .swatch{ background:var(--interchange); }
+</style>
+</head>
+<body>
+
+<div class="emergency-bar">
+  <span><strong>Need help right now?</strong> Call <strong>2-1-1</strong> — free, 24/7, 150+ languages</span>
+  <span class="sep">|</span>
+  <span>Emergency shelter: <strong>416-338-4766</strong></span>
+  <span class="sep">|</span>
+  <span class="translate-wrap">🌐 <span id="google_translate_element"></span></span>
+</div>
+
+<script>
+  function googleTranslateElementInit(){
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'fr,es,ar,zh-CN,zh-TW,pt,ur,tl,ru,fa,ta,so,uk,vi,pa,ko,tr,pl,sw,bn,am,ti,ne,hi,de,it',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<nav class="route-nav" aria-label="Jump to a route">
+  <a href="#route-a" data-line="a">Foundations Route</a>
+  <a href="#route-b" data-line="b">Bridge Route</a>
+  <a href="#route-c" data-line="c">Credential Route</a>
+  <a href="#route-k" data-line="k">👪 Kids Route (for parents)</a>
+  <a href="#route-u" data-line="u">Interchange (resources for all)</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Toronto · Newcomer &amp; Refugee Resource Hub</p>
+  <h1>Your route starts wherever you're standing.</h1>
+  <p class="lede">Four pathways, mapped like transit lines, each starting from a different situation. Find your line, follow the stops, and use the Interchange for resources everyone can use regardless of route.</p>
+</header>
+
+<div class="map-wrap">
+  <div class="map-card">
+    <svg class="route-map" viewBox="-115 0 1115 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of four resource routes converging on an Interchange">
+      <!-- Line A: Foundations -->
+      <path class="route-line" id="lineA" d="M60,45 C 220,45 220,165 400,165" stroke="#D98E04"></path>
+      <!-- Line B: Bridge -->
+      <path class="route-line" id="lineB" d="M60,125 C 220,125 220,165 400,165" stroke="#1C7C7C"></path>
+      <!-- Line C: Credential -->
+      <path class="route-line" id="lineC" d="M60,205 C 220,205 220,165 400,165" stroke="#6B4E71"></path>
+      <!-- Line K: Kids / K-12 -->
+      <path class="route-line" id="lineK" d="M60,285 C 220,285 220,165 400,165" stroke="#2E7D53"></path>
+      <!-- Trunk to interchange -->
+      <path class="route-line" id="trunk" d="M400,165 L 620,165" stroke="#16262E"></path>
+      <!-- Fan out from interchange to universal categories -->
+      <path class="route-line" id="fan1" d="M620,165 C 720,165 720,75 860,75" stroke="#16262E" stroke-width="3" opacity="0.55"></path>
+      <path class="route-line" id="fan2" d="M620,165 L 860,165" stroke="#16262E" stroke-width="3" opacity="0.55"></path>
+      <path class="route-line" id="fan3" d="M620,165 C 720,165 720,255 860,255" stroke="#16262E" stroke-width="3" opacity="0.55"></path>
+
+      <!-- Start markers -->
+      <g class="station" tabindex="0" role="link" aria-label="Foundations route start" data-target="#route-a">
+        <circle class="start-ring" cx="60" cy="45" r="9" stroke="#D98E04"></circle>
+        <circle class="dot" cx="60" cy="45" r="9" stroke="#D98E04"></circle>
+        <text class="label-left" x="42" y="42">Interrupted /</text>
+        <text class="label-left" x="42" y="55">no HS diploma</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Bridge route start" data-target="#route-b">
+        <circle class="start-ring" cx="60" cy="125" r="9" stroke="#1C7C7C" style="animation-delay:0.35s"></circle>
+        <circle class="dot" cx="60" cy="125" r="9" stroke="#1C7C7C"></circle>
+        <text class="label-left" x="42" y="129">HS diploma</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Credential route start" data-target="#route-c">
+        <circle class="start-ring" cx="60" cy="205" r="9" stroke="#6B4E71" style="animation-delay:0.7s"></circle>
+        <circle class="dot" cx="60" cy="205" r="9" stroke="#6B4E71"></circle>
+        <text class="label-left" x="42" y="202">Bachelor's /</text>
+        <text class="label-left" x="42" y="215">professional</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Kids K to 12 route start, for parents" data-target="#route-k">
+        <circle class="start-ring" cx="60" cy="285" r="9" stroke="#2E7D53" style="animation-delay:1.05s"></circle>
+        <circle class="dot" cx="60" cy="285" r="9" stroke="#2E7D53"></circle>
+        <text class="label-left" x="42" y="282">Parent of child</text>
+        <text class="label-left" x="42" y="295">in school (K–12)</text>
+      </g>
+
+      <!-- Interchange -->
+      <g class="station" tabindex="0" role="link" aria-label="Interchange, resources for everyone" data-target="#route-u">
+        <circle class="interchange-dot" cx="620" cy="165" r="12" stroke="#16262E"></circle>
+        <text class="label-mid" x="620" y="132" font-weight="700">INTERCHANGE</text>
+        <text class="label-mid sub" x="620" y="197">resources for everyone</text>
+      </g>
+
+      <!-- Universal category endpoints -->
+      <g class="station" tabindex="0" role="link" aria-label="Legal aid" data-target="#route-u">
+        <circle class="dot" cx="860" cy="75" r="7" stroke="#16262E"></circle>
+        <text x="875" y="80">Legal aid</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Housing and health" data-target="#route-u">
+        <circle class="dot" cx="860" cy="165" r="7" stroke="#16262E"></circle>
+        <text x="875" y="170">Housing / Health</text>
+      </g>
+      <g class="station" tabindex="0" role="link" aria-label="Employment support" data-target="#route-u">
+        <circle class="dot" cx="860" cy="255" r="7" stroke="#16262E"></circle>
+        <text x="875" y="260">Employment</text>
+      </g>
+    </svg>
+  </div>
+  <p class="map-hint">👆 Click any stop to jump straight to that section</p>
+  <div class="legend">
+    <a href="#route-a" class="legend-item" data-line="a"><span class="swatch"></span>Foundations</a>
+    <a href="#route-b" class="legend-item" data-line="b"><span class="swatch"></span>Bridge</a>
+    <a href="#route-c" class="legend-item" data-line="c"><span class="swatch"></span>Credential</a>
+    <a href="#route-k" class="legend-item" data-line="k"><span class="swatch"></span>Kids (for parents)</a>
+    <a href="#route-u" class="legend-item" data-line="u"><span class="swatch"></span>Interchange</a>
+  </div>
+</div>
+
+<main>
+
+  <section class="route" id="route-a" data-line="a">
+    <div class="route-head">
+      <span class="route-chip">Foundations Route</span>
+      <h2>No Ontario high school diploma yet</h2>
+    </div>
+    <p class="goal">Goal: get an Ontario-recognized high school credential — whether you never finished school, or you finished elsewhere and need it recognized here.</p>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — CAEC (Canadian Adult Education Credential)</h3>
+        <span class="contact"><a href="https://www.ilc.org/pages/caec" target="_blank" rel="noopener">ilc.org/pages/caec</a></span>
+        <p><strong>What it is:</strong> a high school equivalency test that replaced the GED in May 2024. Best for adults 18+ who <strong>never completed high school</strong> anywhere and want a recognized credential without going back to class. 5 tests (reading, writing, math, science, social studies), 55% pass mark, earns an Ontario High School Equivalency Certificate. Only offered through the TVO Independent Learning Centre.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — PLAR (Prior Learning Assessment &amp; Recognition)</h3>
+        <span class="contact"><a href="https://www.tdsb.on.ca/High-School/Guidance/PLAR" target="_blank" rel="noopener">tdsb.on.ca — PLAR</a></span>
+        <p><strong>What it is:</strong> a credit-recognition process, not a test. Best for adults who <strong>did attend</strong> secondary school outside Ontario or Canada — or started grade 9 in Ontario but didn't finish — and want that learning credited toward a real Ontario Secondary School Diploma (OSSD) instead of starting over. A school counsellor assesses your transcripts and/or prior experience to grant credits directly.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — Academic Upgrading</h3>
+        <span class="contact">TDSB &amp; TCDSB Adult Education</span>
+        <p><strong>What it is:</strong> free refresher courses in math, English, and science through Toronto's school boards — a common on-ramp if you need to build skills before attempting CAEC or PLAR, or before starting college.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-b" data-line="b">
+    <div class="route-head">
+      <span class="route-chip">Bridge Route</span>
+      <h2>High school diploma, no post-secondary yet</h2>
+    </div>
+    <p class="goal">Goal: build language skills and workplace-ready credentials, then move into college or trades.</p>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — Free ESL / LINC classes</h3>
+        <span class="contact">Book assessment first: YMCA · <a href="tel:+14169255462">416-925-5462</a></span>
+        <p><strong>What it is:</strong> LINC (Language Instruction for Newcomers to Canada) is free English instruction for permanent residents and convention refugees. Offered by TDSB, TCDSB, TNO Toronto, WoodGreen, Learning Enrichment Foundation, YWCA Toronto (women-focused), and CCLCS. Refugee claimants: ask about school-board ESL as an alternate route, since LINC isn't open to claimants directly.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — WoodGreen Trades &amp; Pre-Apprentice Programs</h3>
+        <span class="contact"><a href="https://www.woodgreen.org" target="_blank" rel="noopener">woodgreen.org</a></span>
+        <p><strong>What it is:</strong> a free trades pathway, including a 6-week building maintenance training. Requires a Grade 12 math/English assessment, with academic upgrading available if you're not there yet.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — Job Search Workshop</h3>
+        <span class="contact"><a href="https://accesemployment.ca" target="_blank" rel="noopener">ACCES Employment</a> · <a href="tel:+14169211800">416-921-1800</a></span>
+        <p><strong>What it is:</strong> ACCES Employment is a nonprofit that helps newcomers find work matching their skills. This specific program is a 5-day job search techniques workshop covering resumes, interviews, and the Canadian labour market — for new immigrants and convention refugees legally entitled to work.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-c" data-line="c">
+    <div class="route-head">
+      <span class="route-chip">Credential Route</span>
+      <h2>Bachelor's degree or professional credential earned abroad</h2>
+    </div>
+    <p class="goal">Goal: get your credential recognized in Canada, then bridge back into your field.</p>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — Educational Credential Assessment (ECA)</h3>
+        <span class="contact"><a href="https://www.wes.org" target="_blank" rel="noopener">World Education Services (WES)</a> · <a href="tel:+18003613106">1-800-361-3106</a> · 130 Adelaide St W, Suite 800 <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=130+Adelaide+St+W+Suite+800+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇 Directions</a></span>
+        <p><strong>What it is:</strong> WES is IRCC-designated to issue ECAs, which translate a foreign degree into its Canadian equivalent. Cost runs $115 (document-by-document) to $245 CAD (course-by-course) — some settlement agencies subsidize this, so ask your settlement worker before paying out of pocket. The <strong>WES Gateway Program</strong> offers an alternative assessment if you have limited proof of your academic documents.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — Bridging Programs</h3>
+        <span class="contact"><a href="https://accesemployment.ca" target="_blank" rel="noopener">ACCES Employment</a> · <a href="tel:+14169211800">416-921-1800</a> · 489 College St <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=489+College+St+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇 Directions</a></span>
+        <p><strong>What it is:</strong> sector-specific training for regulated professions (nursing, engineering) and in-demand fields (IT, finance) that connects you with Canadian employers. Typically requires <strong>CLB 6–7+ English</strong> — CLB (Canadian Language Benchmark) is Canada's national 1–12 scale for rating English proficiency; <a href="https://www.language.ca/resourcesexpertise/on-clb/" target="_blank" rel="noopener">see the official CLB explainer</a> to check where you land. Check the government's approved <strong>Ontario Bridge Training Program</strong> list — the <strong>OBPAP bursary</strong> can help cover costs.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — Licensing Bodies</h3>
+        <p>Contact the regulatory body for your specific profession directly — most accept WES evaluations as a starting point (e.g., Professional Engineers Ontario).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-k" data-line="k">
+    <div class="route-head">
+      <span class="route-chip">Kids Route — For Parents (K–12)</span>
+      <h2>Registering a school-age child</h2>
+    </div>
+    <p class="goal">Goal: get your child enrolled in school and supported through the settlement transition.</p>
+    <div class="callout" style="border-color:var(--line-k); background:#EAF4EE;">
+      <strong>👪 This route is for parents and guardians</strong> — not for the child directly. Walk through these steps on behalf of your school-age kid.
+    </div>
+    <div class="stops">
+      <div class="stop">
+        <h3>Stop 1 — Register at Your Catchment School</h3>
+        <span class="contact"><a href="https://www.tdsb.on.ca/New-to-Ontario-Canada/Newcomer-Students-Elementary-and-High-School" target="_blank" rel="noopener">tdsb.on.ca — Newcomer Students</a></span>
+        <p><strong>What it is:</strong> permanent residents, citizens, work/study permit holders' children, and refugee claimants all get free, immediate access to public school — regardless of immigration status. Schools cannot share your information with immigration authorities. Bring proof of address, your child's birth certificate or passport (translated to English), and immunization records (report online at toronto.ca/studentvaccines, or call <a href="tel:+14163921250">416-392-1250</a> to request an exemption).</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 2 — English Language Learner (ELL) Support</h3>
+        <p><strong>What it is:</strong> in-class ESL support for K–12 students, built into their regular school day at TDSB and TCDSB schools — ask about it at the school office when you register, no separate application needed.</p>
+      </div>
+      <div class="stop">
+        <h3>Stop 3 — Youth &amp; Family Settlement Programs</h3>
+        <span class="contact"><a href="https://www.woodgreen.org" target="_blank" rel="noopener">WoodGreen Community Services</a></span>
+        <p><strong>What it is:</strong> recreational, skill-building, and mental health support designed specifically for newcomer youth. Ask your settlement worker which program fits your child's age group.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route-u" data-line="u">
+    <div class="route-head">
+      <span class="route-chip">Interchange</span>
+      <h2>Resources for everyone, any route</h2>
+    </div>
+    <p class="goal">Change lines here — these services aren't tied to your education background.</p>
+
+    <div class="callout">
+      <strong>Heads up:</strong> new permanent residents face a <strong>3-month OHIP waiting period</strong>. The Interim Federal Health Program (IFHP) or a community health centre can cover that gap — see Health below.
+    </div>
+    <p class="map-hint" style="margin-bottom:18px;">🚇 Tap any Directions link below for transit directions from your location</p>
+
+    <div class="cat-grid">
+      <div class="cat-card">
+        <h3>⚖️ Settlement &amp; Legal Aid</h3>
+        <ul>
+          <li><span class="org">Legal Aid Ontario — Refugee Law Office</span><span class="contact"><a href="tel:+14169778111">416-977-8111</a> · 20 Dundas St W, Suite 202 <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=20+Dundas+St+W+Suite+202+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+          <li><span class="org">Parkdale Community Legal Services</span><span class="contact">266 Queen St W <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=266+Queen+St+W+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+          <li><span class="org">FCJ Refugee Centre</span><span class="contact"><a href="tel:+14164699754">416-469-9754</a> · 208 Oakwood Ave <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=208+Oakwood+Ave+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+          <li><span class="org">CultureLink Settlement Services</span><span class="contact"><a href="tel:+14165886288">416-588-6288</a> · 2340 Dundas St W <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=2340+Dundas+St+W+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <h3>💼 Employment</h3>
+        <ul>
+          <li><span class="org">ACCES Employment</span><span class="contact"><a href="tel:+14169211800">416-921-1800</a> · 489 College St <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=489+College+St+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+          <li><span class="org">Newcomer Women's Services</span><span class="contact"><a href="tel:+14164690196">416-469-0196</a> · 355 Church St <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=355+Church+St+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+          <li><span class="org">WoodGreen Community Services</span><span class="contact"><a href="https://www.woodgreen.org" target="_blank" rel="noopener">woodgreen.org</a></span></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <h3>🏠 Housing</h3>
+        <ul>
+          <li><span class="org">Toronto Central Intake (emergency shelter)</span><span class="contact"><a href="tel:+14163384766">416-338-4766</a> · <a href="tel:311">311</a></span></li>
+          <li><span class="org">Sojourn House</span><span class="contact"><a href="https://www.sojournhouse.org" target="_blank" rel="noopener">sojournhouse.org</a></span></li>
+          <li><span class="org">CRWC Emergency Shelter for Refugees</span><span class="contact"><a href="tel:+14165889277">416-588-9277</a> · 43 Christie St <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=43+Christie+St+Toronto+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+        </ul>
+      </div>
+      <div class="cat-card">
+        <h3>🏥 Health &amp; Mental Health</h3>
+        <ul>
+          <li><span class="org">Interim Federal Health Program (IFHP)</span><span class="contact">canada.ca — search "IFHP"</span></li>
+          <li><span class="org">Canadian Centre for Refugee &amp; Immigrant Health Care</span><span class="contact">Sheppard &amp; Midland Ave, Scarborough <a class="directions" href="https://www.google.com/maps/dir/?api=1&destination=Sheppard+Ave+%26+Midland+Ave+Scarborough+ON&travelmode=transit" target="_blank" rel="noopener">🚇</a></span></li>
+          <li><span class="org">FCJ Refugee Centre — Primary Health Clinic</span><span class="contact">For uninsured / OHIP-waiting patients</span></li>
+          <li><span class="org">CultureLink mental health support</span><span class="contact"><a href="tel:+14165886288">416-588-6288</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Built for a Toronto chapter connecting newcomers and refugees with the resources they need — verify hours and eligibility directly with each org, as programs and funding change.</p>
+</footer>
+
+<!-- Maintainer note (not visible to site visitors): update contacts/programs directly in this file
+     as you confirm details on the ground, then re-deploy via Netlify Drop. -->
+
+<script>
+  // Reveal-on-load line drawing (respects reduced motion via CSS override above)
+  document.querySelectorAll('.route-line').forEach(function(path){
+    var len = path.getTotalLength();
+    path.style.setProperty('--len', len);
+    path.classList.add('animate');
+  });
+
+  // Dynamically position sticky nav just below the emergency bar, whatever its actual height is.
+  // Watches for size changes too, since the Google Translate widget loads asynchronously
+  // and can grow the bar's height after our first measurement.
+  var bar = document.querySelector('.emergency-bar');
+  var navEl = document.querySelector('nav.route-nav');
+  function positionNav(){
+    navEl.style.top = bar.offsetHeight + 'px';
+  }
+  positionNav();
+  window.addEventListener('resize', positionNav);
+  if(window.ResizeObserver){
+    new ResizeObserver(positionNav).observe(bar);
+  } else {
+    setTimeout(positionNav, 500);
+    setTimeout(positionNav, 1500);
+  }
+
+  // Single shared scroll function, used by the nav pills, the legend, AND the map stations.
+  // Calculated manually (not relying on default anchor jump / scroll-margin-top) so it
+  // reliably clears both sticky bars regardless of their exact heights.
+  function scrollToTarget(targetId){
+    var target = document.querySelector(targetId);
+    if(!target) return;
+    var offset = bar.offsetHeight + navEl.offsetHeight + 16;
+    var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+    history.pushState(null, '', targetId);
+  }
+
+  // Nav pills
+  var navLinks = Array.from(document.querySelectorAll('nav.route-nav a'));
+  navLinks.forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      scrollToTarget(link.getAttribute('href'));
+    });
+  });
+
+  // Legend row below the map
+  document.querySelectorAll('.legend-item').forEach(function(item){
+    item.addEventListener('click', function(e){
+      e.preventDefault();
+      scrollToTarget(item.getAttribute('href'));
+    });
+  });
+
+  // Map stations — THIS was the missing piece. Every station now has a data-target
+  // attribute pointing at its section, and both click and keyboard (Enter/Space) fire it.
+  document.querySelectorAll('.station[data-target]').forEach(function(st){
+    st.addEventListener('click', function(){
+      scrollToTarget(st.getAttribute('data-target'));
+    });
+    st.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        scrollToTarget(st.getAttribute('data-target'));
+      }
+    });
+  });
+
+  // Highlight the nav pill for whichever route section is currently in view
+  var sections = document.querySelectorAll('section.route');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.getAttribute('id');
+        navLinks.forEach(function(link){
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+  sections.forEach(function(sec){ observer.observe(sec); });
+</script>
+
+</body>
+</html>
